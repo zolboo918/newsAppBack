@@ -8,7 +8,6 @@ const CompanySchema = new mongoose.Schema({
   },
   logo: {
     type: String,
-    required: [true, "Байгууллагын лого оруулна уу"],
   },
   category: {
     type: mongoose.Schema.ObjectId,

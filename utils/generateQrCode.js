@@ -7,7 +7,7 @@ module.exports = generateQrCode = async (data) => {
   };
   const strQrData = JSON.stringify(qrData);
 
-  const qrImg = await qr.toDataURL(strQrData);
+  // const qrImg = await qr.toDataURL(strQrData);
 
-  return qrImg;
+  return strQrData;
 };

@@ -14,6 +14,18 @@ exports.getAllSector = asyncHandler(async (req, res, next) => {
   });
 });
 
+exports.getSector = asyncHandler(async (req, res, next) => {
+  const sector = await Sector.findById(req.params.id);
+  if (!sector) {
+    throw new MyError("Салбар олдсонгүй", 400);
+  }
+
+  res.status(200).json({
+    success: true,
+    data: sector,
+  });
+});
+
 exports.createSector = asyncHandler(async (req, res, next) => {
   const dbSector = await Sector.create(req.body);
 

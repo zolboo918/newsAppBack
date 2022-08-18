@@ -8,6 +8,7 @@ const helmet = require("helmet");
 const xss = require("xss-clean");
 const rateLimit = require("express-rate-limit");
 const hpp = require("hpp");
+const fileUpload = require("express-fileupload");
 
 const connectDb = require("./config/connectDB");
 const errorHandler = require("./middleware/errorHandler");
@@ -18,6 +19,8 @@ const companyRoute = require("./routes/company");
 const companyCategoryRoute = require("./routes/companyCategories");
 const companyChildCategories = require("./routes/companyChildCategories");
 const sectorRoute = require("./routes/sector");
+const nameCardRoute = require("./routes/nameCard");
+const nameCardMapRoute = require("./routes/nameCardMap");
 
 dotenv.config({ path: "./config/config.env" });
 
@@ -61,7 +64,11 @@ app.use(hpp());
 
 app.use(cookieParser());
 
+app.use("/uploads", express.static(__dirname + "/public/uploads"));
+
 app.use(express.json());
+
+app.use(fileUpload());
 
 app.use(cors(corsOptions));
 
@@ -80,6 +87,8 @@ app.use("/api/v1/companyCategories", companyCategoryRoute);
 app.use("/api/v1/companyChildCategories", companyChildCategories);
 app.use("/api/v1/news", newsRoute);
 app.use("/api/v1/sectors", sectorRoute);
+app.use("/api/v1/nameCards", nameCardRoute);
+app.use("/api/v1/nameCardsMap", nameCardMapRoute);
 
 app.use(errorHandler);
 

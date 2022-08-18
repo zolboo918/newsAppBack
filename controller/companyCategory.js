@@ -14,6 +14,18 @@ exports.getAllCompanyCategory = asyncHandler(async (req, res, next) => {
   });
 });
 
+exports.getCategory = asyncHandler(async (req, res, next) => {
+  const category = await CompanyCategory.findById(req.params.id);
+  if (!category) {
+    throw new MyError("Байгууллагын ангилал олдсонгүй", 400);
+  }
+
+  res.status(200).json({
+    success: true,
+    data: category,
+  });
+});
+
 exports.createCompanyCategory = asyncHandler(async (req, res, next) => {
   const dbCategory = await CompanyCategory.create(req.body);
 

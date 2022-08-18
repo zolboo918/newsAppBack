@@ -1,17 +1,17 @@
 const News = require("../model/news");
 const asyncHandler = require("../middleware/asyncHandler");
 const MyError = require("../utils/myError");
+const path = require("path");
 
-// PUT:  api/v1/books/:id/photo
+// POST:  api/v1/company/:id/photo
 exports.uploadNewsPhoto = asyncHandler(async (req, res, next) => {
-  const book = await News.findById(req.params.id);
+  const news = await News.findById(req.params.id);
 
-  if (!book) {
-    throw new MyError(req.params.id + " ID-тэй ном байхгүйээ.", 400);
+  if (!news) {
+    throw new MyError(req.params.id + " ID-тэй байгууллага байхгүй.", 400);
   }
 
   // image upload
-
   const file = req.files.file;
 
   if (!file.mimetype.startsWith("image")) {
@@ -24,7 +24,7 @@ exports.uploadNewsPhoto = asyncHandler(async (req, res, next) => {
 
   file.name = `photo_${req.params.id}${path.parse(file.name).ext}`;
 
-  file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, (err) => {
+  file.mv(`${process.env.COMPANY_LOGO_PATH}/${file.name}`, (err) => {
     if (err) {
       throw new MyError(
         "Файлыг хуулах явцад алдаа гарлаа. Алдаа : " + err.message,
@@ -32,8 +32,8 @@ exports.uploadNewsPhoto = asyncHandler(async (req, res, next) => {
       );
     }
 
-    book.photo = file.name;
-    book.save();
+    news.photo = `${file.name}`;
+    news.save();
 
     res.status(200).json({
       success: true,
@@ -47,11 +47,18 @@ exports.getAllNews = asyncHandler(async (req, res, next) => {
   if (!news) {
     throw new MyError("Тэмдэглэл олдсонгүй", 400);
   }
-
-  res.status(200).json({
-    success: true,
-    data: news,
+  let arr = [];
+  news.forEach(async (element) => {
+    const comm = await News.findById(element).populate("userId");
+    arr.push(comm);
   });
+
+  setTimeout(() => {
+    res.status(200).json({
+      success: true,
+      data: arr,
+    });
+  }, 500);
 });
 
 exports.createNews = asyncHandler(async (req, res, next) => {

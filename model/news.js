@@ -11,7 +11,6 @@ const NewsSchema = new mongoose.Schema({
   },
   photo: {
     type: String,
-    required: [true, "Мэдээний зураг оруулна уу"],
   },
   createdDate: {
     type: Date,
@@ -20,6 +19,9 @@ const NewsSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.ObjectId,
     ref: "User",
+  },
+  videoLink: {
+    type: String,
   },
 });
 

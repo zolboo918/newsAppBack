@@ -8,6 +8,41 @@ const crypto = require("crypto");
 const sendGridEmailSender = require("../utils/sendGridMailSender");
 const generateQrCode = require("../utils/generateQrCode");
 const { isEmpty } = require("lodash");
+const path = require("path");
+
+exports.uploadUserNameCard = asyncHandler(async (req, res, next) => {
+  const nameCard = await NameCard.findById(req.params.id);
+
+  if (!nameCard) {
+    throw new MyError(req.params.id + " ID-тэй нэрийн хуудас байхгүй.", 400);
+  }
+
+  // image upload
+  const file = req.files.file;
+
+  if (!file.mimetype.startsWith("image")) {
+    throw new MyError("Та зураг upload хийнэ үү.", 400);
+  }
+
+  file.name = `photo_${req.params.id}${path.parse(file.name).ext}`;
+
+  file.mv(`${process.env.COMPANY_LOGO_PATH}/${file.name}`, (err) => {
+    if (err) {
+      throw new MyError(
+        "Файлыг хуулах явцад алдаа гарлаа. Алдаа : " + err.message,
+        400
+      );
+    }
+
+    nameCard.image = `${file.name}`;
+    nameCard.save();
+
+    res.status(200).json({
+      success: true,
+      data: file.name,
+    });
+  });
+});
 
 exports.registerUser = asyncHandler(async (req, res, next) => {
   const data = req.body;
@@ -17,7 +52,7 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
     lastName: data.lastName,
     phone: data.phone,
     email: data.email,
-    companyId: data.companyId,
+    companyName: data.companyName,
     qr,
     linkedInId: data.linkedInId,
     password: data.password,
@@ -39,7 +74,7 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
     lastName: data.lastName,
     phone: data.phone,
     email: data.email,
-    companyId: data.companyId,
+    companyName: data.companyName,
     qr,
     linkedInId: data.linkedInId,
     password: data.password,
@@ -57,7 +92,12 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    data: { ...user, ...nameCard },
+    data: {
+      ...data,
+      qr,
+      userId: user.id,
+      nameCardId: nameCard.id,
+    },
     token: jwt,
   });
 });
@@ -94,10 +134,17 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
     httpOnly: true,
   };
 
-  res.status(200).cookie("book-app", token, cookieOptions).json({
+  let nameCardPhoto = "";
+  const nameCard = await NameCard.findOne({ userId: user.id });
+  if (nameCard) {
+    nameCardPhoto = nameCard.image;
+  }
+  res.status(200).cookie("biz-card", token, cookieOptions).json({
     success: true,
     user,
     token,
+    photo: nameCardPhoto,
+    nameCardId: nameCard.id,
   });
 });
 
@@ -106,7 +153,7 @@ exports.logOut = asyncHandler(async (req, res, next) => {
     expires: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000),
   };
 
-  res.status(200).cookie("book-app", null, cookieOptions).json({
+  res.status(200).cookie("biz-card", null, cookieOptions).json({
     success: true,
     data: "logged out",
   });
@@ -224,7 +271,6 @@ exports.newPassword = asyncHandler(async (req, res, next) => {
   user.resetPasswordExpire = undefined;
 
   await user.save();
-  console.log("user", user);
 
   res.status(200).json({
     success: true,
@@ -241,7 +287,6 @@ exports.passwordChange = asyncHandler(async (req, res, next) => {
   }
 
   const ok = await user.checkPassword(req.body.oldPassword);
-  console.log("ok", ok);
 
   if (!ok) {
     throw new MyError("Хуучин нууц үг буруу байна", 400);

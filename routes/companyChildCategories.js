@@ -3,6 +3,7 @@ const {
   createCompanyChildCategory,
   deleteCompanyChildCategory,
   getAllCompanyChildCategory,
+  getCompanyChildCategory,
 } = require("../controller/companyChildCategory");
 const { checkToken } = require("../middleware/protect");
 
@@ -13,6 +14,9 @@ router
   .post(createCompanyChildCategory)
   .get(getAllCompanyChildCategory);
 
-router.route("/:id").delete(deleteCompanyChildCategory);
+router
+  .route("/:id")
+  .delete(deleteCompanyChildCategory)
+  .get(getCompanyChildCategory);
 
 module.exports = router;

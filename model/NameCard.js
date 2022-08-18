@@ -33,7 +33,7 @@ const CardNameSchema = new mongoose.Schema({
     type: String,
     required: [true, "Албан тушаал заавал оруулна уу"],
   },
-  companyID: {
+  companyId: {
     type: mongoose.Schema.ObjectId,
     ref: "Company",
   },

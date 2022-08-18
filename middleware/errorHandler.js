@@ -6,7 +6,7 @@ const errorHandler = (err, req, res, next) => {
 
   console.log(error.message.red.underline);
 
-  res.status(error.statusCode || 500).json({
+  res.status(200).json({
     success: false,
     error,
   });

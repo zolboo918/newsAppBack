@@ -5,6 +5,7 @@ const {
   loginUser,
   updateUserInfo,
   getUsers,
+  uploadUserNameCard,
   forgotPassword,
   resetPassword,
   getUser,
@@ -27,6 +28,7 @@ router.route("/login").post(loginUser);
 // router.route("/:id/change-password").post(passwordChange);
 
 router.route("/").get(getUsers);
+router.route("/:id/photo").post(uploadUserNameCard);
 
 // router
 //   .route("/:id")
