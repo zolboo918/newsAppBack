@@ -20,6 +20,10 @@ const NewsSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: "User",
   },
+  nameCardId: {
+    type: mongoose.Schema.ObjectId,
+    ref: "NameCard",
+  },
   videoLink: {
     type: String,
   },

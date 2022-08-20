@@ -6,6 +6,7 @@ const {
   updateNameCard,
   getNameCardPhoto,
   getNameCardByUserId,
+  getNameCardByQr,
 } = require("../controller/NameCard");
 
 const router = express.Router();
@@ -19,6 +20,7 @@ router
   .get(getNameCard);
 router.route("/:id/photo").get(getNameCardPhoto);
 router.route("/user/:id").get(getNameCardByUserId);
+router.route("/qr/:qr").get(getNameCardByQr);
 
 // router
 //   .route("/:id")

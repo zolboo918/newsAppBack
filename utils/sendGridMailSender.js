@@ -1,23 +1,36 @@
-// using Twilio SendGrid's v3 Node.js Library
-// https://github.com/sendgrid/sendgrid-nodejs
-// javascript;
+const nodemailer = require("nodemailer");
+const Mailjet = require("node-mailjet");
 module.exports = async function sendGridEmailSender(option) {
-  const sgMail = require("@sendgrid/mail");
-
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  const msg = {
-    to: option.to, // Change to your recipient
-    from: "17b1num0351@stud.num.edu.mn", // Change to your verified sender
-    subject: "Нууц үг сэргээх",
-    text: "and easy to do anywhere, even with Node.js",
-    html: option.html,
-  };
-  sgMail
-    .send(msg)
-    .then(() => {
-      console.log("Email sent");
+  const mailjet = new Mailjet.apiConnect(
+    process.env.MAILJET_API_KEY,
+    process.env.MAILJET_SECRET_KEY
+  );
+  const request = mailjet.post("send", { version: "v3.1" }).request({
+    Messages: [
+      {
+        From: {
+          Email: "bizcardmailer6@gmail.com",
+          Name: "BizCard",
+        },
+        To: [
+          {
+            Email: option.to,
+            Name: "",
+          },
+        ],
+        Subject: "Bizcard нууц үг сэргээх хүсэлт",
+        TextPart: "",
+        HTMLPart: option.html,
+      },
+    ],
+  });
+  request
+    .then((result) => {
+      console.log("email sent");
+      return true;
     })
-    .catch((error) => {
-      console.error(error);
+    .catch((err) => {
+      console.log(err.statusCode);
+      return false;
     });
 };

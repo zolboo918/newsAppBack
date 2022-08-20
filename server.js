@@ -21,6 +21,7 @@ const companyChildCategories = require("./routes/companyChildCategories");
 const sectorRoute = require("./routes/sector");
 const nameCardRoute = require("./routes/nameCard");
 const nameCardMapRoute = require("./routes/nameCardMap");
+const nameCardManualRoute = require("./routes/nameCardManual");
 
 dotenv.config({ path: "./config/config.env" });
 
@@ -89,6 +90,7 @@ app.use("/api/v1/news", newsRoute);
 app.use("/api/v1/sectors", sectorRoute);
 app.use("/api/v1/nameCards", nameCardRoute);
 app.use("/api/v1/nameCardsMap", nameCardMapRoute);
+app.use("/api/v1/nameCardManual", nameCardManualRoute);
 
 app.use(errorHandler);
 

@@ -1,2 +1,3 @@
 node_modules
 .gitignoresendgrid.env
+sendgrid.env

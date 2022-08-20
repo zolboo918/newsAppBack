@@ -6,7 +6,6 @@ const path = require("path");
 // POST:  api/v1/company/:id/photo
 exports.uploadCompanyLogo = asyncHandler(async (req, res, next) => {
   const company = await Company.findById(req.params.id);
-  console.log("company :>> ", company);
   if (!company) {
     throw new MyError(req.params.id + " ID-тэй байгууллага байхгүй.", 400);
   }

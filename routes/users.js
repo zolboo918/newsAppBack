@@ -21,9 +21,9 @@ const router = express.Router();
 router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);
 
-// router.route("/forgot-password").post(forgotPassword);
-// router.route("/check-token").post(resetPassword);
-// router.route("/reset-password").post(newPassword);
+router.route("/forgot-password").post(forgotPassword);
+router.route("/check-token").post(resetPassword);
+router.route("/reset-password").post(newPassword);
 
 // router.route("/:id/change-password").post(passwordChange);
 

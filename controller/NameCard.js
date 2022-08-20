@@ -30,7 +30,7 @@ exports.getAllNameCards = asyncHandler(async (req, res, next) => {
 });
 
 exports.getNameCard = asyncHandler(async (req, res, next) => {
-  const nameCard = await NameCard.findById(req.params.id);
+  const nameCard = await NameCard.findById(req.params.id).populate("companyId");
 
   res.status(200).json({
     success: true,
@@ -39,8 +39,9 @@ exports.getNameCard = asyncHandler(async (req, res, next) => {
 });
 
 exports.getNameCardByUserId = asyncHandler(async (req, res, next) => {
-  const nameCard = await NameCard.findOne({ userId: req.params.id });
-  console.log("nameCard :>> ", nameCard);
+  const nameCard = await NameCard.findOne({ userId: req.params.id }).populate(
+    "companyId"
+  );
   res.status(200).json({
     success: true,
     data: nameCard,
@@ -66,5 +67,18 @@ exports.getNameCardPhoto = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data: nameCard.photo,
+  });
+});
+
+exports.getNameCardByQr = asyncHandler(async (req, res, next) => {
+  const nameCard = await NameCard.find({ qr: req.params.qr });
+
+  if (!nameCard) {
+    throw new MyError("Нэрийн хуудасны мэдээлэл олдсонгүй");
+  }
+
+  res.status(200).json({
+    success: true,
+    data: nameCard,
   });
 });

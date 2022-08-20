@@ -11,6 +11,10 @@ const NameCardMapScheme = new mongoose.Schema({
     ref: "NameCard",
     requiresd: true,
   },
+  isFriend: {
+    type: String,
+    default: "2",
+  },
 });
 
 module.exports = mongoose.model("NameCardMap", NameCardMapScheme);
