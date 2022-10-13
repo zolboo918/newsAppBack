@@ -27,6 +27,7 @@ const NewsSchema = new mongoose.Schema({
   videoLink: {
     type: String,
   },
+  viewedCount: Number,
 });
 
 // const NoteSchema = new mongoose.Schema({

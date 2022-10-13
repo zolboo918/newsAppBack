@@ -27,7 +27,6 @@ const UserSchema = new mongoose.Schema({
     ],
     unique: true,
   },
-  companyName: String,
   companyID: {
     type: mongoose.Schema.ObjectId,
     ref: "Company",
@@ -48,6 +47,9 @@ const UserSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: "Sector",
   },
+  profession: String,
+  workPhone: String,
+  aboutActivity: String,
   agreementConfirmed: Boolean,
   resetPasswordToken: String,
   resetPasswordExpire: Date,

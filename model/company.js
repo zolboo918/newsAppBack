@@ -40,6 +40,7 @@ const CompanySchema = new mongoose.Schema({
   location: {
     type: String,
   },
+  isOfficial: Boolean,
 });
 
 module.exports = mongoose.model("Company", CompanySchema);

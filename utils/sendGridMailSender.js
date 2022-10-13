@@ -9,7 +9,7 @@ module.exports = async function sendGridEmailSender(option) {
     Messages: [
       {
         From: {
-          Email: "bizcardmailer6@gmail.com",
+          Email: "helpservice@bizcard.ml",
           Name: "BizCard",
         },
         To: [
@@ -33,4 +33,37 @@ module.exports = async function sendGridEmailSender(option) {
       console.log(err.statusCode);
       return false;
     });
+  // const Mailjet = require("node-mailjet");
+  // const mailjet = Mailjet.apiConnect(
+  //   "13c8c97cb46465c426adde105ac51010",
+  //   "cf9ffe3164481e6321a6f1bbfb79eaa9"
+  // );
+  // const request = mailjet.post("send", { version: "v3.1" }).request({
+  //   Messages: [
+  //     {
+  //       From: {
+  //         Email: "zolboo412@gmail.com",
+  //         Name: "zolboo",
+  //       },
+  //       To: [
+  //         {
+  //           Email: "zolboo412@gmail.com",
+  //           Name: "zolboo",
+  //         },
+  //       ],
+  //       Subject: "Greetings from Mailjet.",
+  //       TextPart: "My first Mailjet email",
+  //       HTMLPart:
+  //         "<h3>Dear passenger 1, welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />May the delivery force be with you!",
+  //       CustomID: "AppGettingStartedTest",
+  //     },
+  //   ],
+  // });
+  // request
+  //   .then((result) => {
+  //     console.log(result.body);
+  //   })
+  //   .catch((err) => {
+  //     console.log(err.statusCode);
+  //   });
 };

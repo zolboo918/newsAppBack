@@ -5,7 +5,8 @@ const CardNameSchema = new mongoose.Schema({
     type: [mongoose.Schema.ObjectId],
     ref: "User",
   },
-  image: String,
+  backImage: String,
+  frontImage: String,
   lastName: {
     type: String,
     required: [true, "Хэрэглэгчийн овог оруулна уу"],
@@ -33,6 +34,9 @@ const CardNameSchema = new mongoose.Schema({
     type: String,
     required: [true, "Албан тушаал заавал оруулна уу"],
   },
+  profession: String,
+  workPhone: String,
+  aboutActivity: String,
   companyId: {
     type: mongoose.Schema.ObjectId,
     ref: "Company",

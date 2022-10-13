@@ -67,12 +67,16 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
 
   const nameCardBody = {
     userId: user.id,
-    image: data.image,
+    backImage: data.backImage,
+    frontImage: data.frontImage,
     note: data.note,
     isPublic: data.isPublic,
     firstName: data.firstName,
     lastName: data.lastName,
     phone: data.phone,
+    workPhone: data.workPhone,
+    profession: data.profession,
+    aboutActivity: data.aboutActivity,
     email: data.email,
     companyName: data.companyName,
     qr,
