@@ -3,6 +3,7 @@ const News = require("../model/news");
 const User = require("../model/user");
 const asyncHandler = require("../middleware/asyncHandler");
 const MyError = require("../utils/myError");
+const NewsComment = require("../model/NewsComment");
 
 exports.writeComment = asyncHandler(async (req, res, next) => {
   const news = await News.findById(req.params.id);
@@ -95,50 +96,48 @@ exports.getComment = asyncHandler(async (req, res, next) => {
 });
 
 exports.getNewsAllComment = asyncHandler(async (req, res, next) => {
-  const id = req.params.id;
+  const id = req.params.newsId;
   if (!id) {
     throw new MyError("Мэдээний ID явуулна уу", 400);
   }
 
-  const news = await News.findById(id);
+  const news = await NewsComment.find({ newsId: id }).populate("userId");
 
   if (!news) {
     throw new MyError("Мэдээний мэдээлэл байхгүй байна. ID шалгана уу", 400);
   }
 
-  const { comments } = news;
+  // const { comments } = news;
 
-  let comms = [];
+  // let comms = [];
 
-  comments.forEach(async (element) => {
-    const comm = await Comment.findById(element).populate("userId");
-    comms.push(comm);
+  // comments.forEach(async (element) => {
+  //   const comm = await Comment.findById(element).populate("userId");
+  //   comms.push(comm);
+  // });
+
+  // setTimeout(() => {
+  res.status(200).json({
+    success: true,
+    data: news,
   });
-
-  setTimeout(() => {
-    res.status(200).json({
-      success: true,
-      data: comms,
-    });
-  }, 1000);
+  // }, 1000);
 });
 
 exports.getNewsCommentCount = asyncHandler(async (req, res, next) => {
-  const id = req.params.id;
+  const id = req.params.newsId;
   if (!id) {
     throw new MyError("Мэдээний ID явуулна уу", 400);
   }
 
-  const news = await News.findById(id);
+  const newsComment = await NewsComment.find({ newsId: id });
 
-  if (!news) {
+  if (!newsComment) {
     throw new MyError("Мэдээний мэдээлэл байхгүй байна. ID шалгана уу", 400);
   }
 
-  const { comments } = news;
-
   res.status(200).json({
     success: true,
-    data: comments.length,
+    data: newsComment.length,
   });
 });

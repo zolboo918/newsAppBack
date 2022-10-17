@@ -9,7 +9,7 @@ const NewsCommentScheme = new mongoose.Schema({
   newsId: {
     type: mongoose.Schema.ObjectId,
     ref: "News",
-    requiresd: true,
+    required: true,
   },
   content: {
     type: String,
@@ -20,4 +20,4 @@ const NewsCommentScheme = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("NameCardMap", NameCardMapScheme);
+module.exports = mongoose.model("NewsComment", NewsCommentScheme);
