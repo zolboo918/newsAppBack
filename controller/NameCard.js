@@ -82,3 +82,78 @@ exports.getNameCardByQr = asyncHandler(async (req, res, next) => {
     data: nameCard,
   });
 });
+
+exports.uploadBackImage = asyncHandler(async (req, res, next) => {
+  const nameCard = await NameCard.findById(req.params.id);
+
+  if (!nameCard) {
+    throw new MyError(req.params.id + " ID-тэй байгууллага байхгүй.", 400);
+  }
+
+  // image upload
+  const file = req.files.file;
+
+  if (!file.mimetype.startsWith("image")) {
+    throw new MyError("Та зураг upload хийнэ үү.", 400);
+  }
+
+  // if (file.size > process.env.MAX_UPLOAD_FILE_SIZE) {
+  //   throw new MyError("Таны зурагны хэмжээ хэтэрсэн байна.", 400);
+  // }
+
+  file.name = `photo_${req.params.id}${path.parse(file.name).ext}`;
+
+  file.mv(`${process.env.COMPANY_LOGO_PATH}/${file.name}`, (err) => {
+    if (err) {
+      throw new MyError(
+        "Файлыг хуулах явцад алдаа гарлаа. Алдаа : " + err.message,
+        400
+      );
+    }
+
+    nameCard.backImage = `${file.name}`;
+    nameCard.save();
+
+    res.status(200).json({
+      success: true,
+      data: file.name,
+    });
+  });
+});
+exports.uploadFrontImage = asyncHandler(async (req, res, next) => {
+  const nameCard = await NameCard.findById(req.params.id);
+
+  if (!nameCard) {
+    throw new MyError(req.params.id + " ID-тэй байгууллага байхгүй.", 400);
+  }
+
+  // image upload
+  const file = req.files.file;
+
+  if (!file.mimetype.startsWith("image")) {
+    throw new MyError("Та зураг upload хийнэ үү.", 400);
+  }
+
+  // if (file.size > process.env.MAX_UPLOAD_FILE_SIZE) {
+  //   throw new MyError("Таны зурагны хэмжээ хэтэрсэн байна.", 400);
+  // }
+
+  file.name = `photo_${req.params.id}${path.parse(file.name).ext}`;
+
+  file.mv(`${process.env.COMPANY_LOGO_PATH}/${file.name}`, (err) => {
+    if (err) {
+      throw new MyError(
+        "Файлыг хуулах явцад алдаа гарлаа. Алдаа : " + err.message,
+        400
+      );
+    }
+
+    nameCard.frontImage = `${file.name}`;
+    nameCard.save();
+
+    res.status(200).json({
+      success: true,
+      data: file.name,
+    });
+  });
+});

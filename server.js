@@ -24,6 +24,8 @@ const nameCardMapRoute = require("./routes/nameCardMap");
 const nameCardManualRoute = require("./routes/nameCardManual");
 const newsCommentRoute = require("./routes/newsComment");
 const newsLikeRoute = require("./routes/newsLike");
+const eventMapRoute = require("./routes/eventMap");
+const eventRoute = require("./routes/event");
 
 dotenv.config({ path: "./config/config.env" });
 
@@ -95,6 +97,8 @@ app.use("/api/v1/nameCardsMap", nameCardMapRoute);
 app.use("/api/v1/nameCardManual", nameCardManualRoute);
 app.use("/api/v1/newsComment", newsCommentRoute);
 app.use("/api/v1/newsLike", newsLikeRoute);
+app.use("/api/v1/event", eventRoute);
+app.use("/api/v1/eventMap", eventMapRoute);
 
 app.use(errorHandler);
 

@@ -10,7 +10,11 @@ exports.createNameCardMap = asyncHandler(async (req, res, next) => {
     targetId: req.body.targetId,
   });
   if (old.length >= 1) {
-    throw new MyError("Нэрийн хуудас нэмэгдсэн байна", 400);
+    if (old[0].isFriend == "2") {
+      throw new MyError("Хүсэлт илгээгдсэн байна", 400);
+    } else {
+      throw new MyError("Нэрийн хуудас нэмэгдсэн байна", 400);
+    }
   }
   const nameCardMap = await NameCardMap.create(req.body);
 

@@ -7,6 +7,8 @@ const {
   getNameCardPhoto,
   getNameCardByUserId,
   getNameCardByQr,
+  uploadBackImage,
+  uploadFrontImage,
 } = require("../controller/NameCard");
 
 const router = express.Router();
@@ -18,7 +20,8 @@ router
   .put(updateNameCard)
   .delete(deleteNameCard)
   .get(getNameCard);
-router.route("/:id/photo").get(getNameCardPhoto);
+router.route("/:id/backImage").get(getNameCardPhoto).post(uploadBackImage);
+router.route("/:id/frontImage").get(getNameCardPhoto).post(uploadFrontImage);
 router.route("/user/:id").get(getNameCardByUserId);
 router.route("/qr/:qr").get(getNameCardByQr);
 

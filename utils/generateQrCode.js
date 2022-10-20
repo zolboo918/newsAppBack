@@ -3,7 +3,8 @@ const qr = require("qrcode");
 module.exports = generateQrCode = async (data) => {
   const qrData = {
     name: data.firstName,
-    email: data.lastName,
+    email: data.email,
+    code: data.qrText,
   };
   const strQrData = JSON.stringify(qrData);
 

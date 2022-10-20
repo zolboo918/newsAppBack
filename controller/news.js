@@ -80,3 +80,16 @@ exports.createNews = asyncHandler(async (req, res, next) => {
     data: dbNews,
   });
 });
+
+exports.newsViewCountAdd = asyncHandler(async (req, res, next) => {
+  const news = await News.findByIdAndUpdate(req.params.id, {
+    viewedCount: req.body.viewedCount,
+  });
+  if (!news) {
+    throw new MyError("Амжилтгүй", 400);
+  }
+  res.status(200).json({
+    success: true,
+    data: news,
+  });
+});
