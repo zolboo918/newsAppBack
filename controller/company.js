@@ -21,9 +21,9 @@ exports.uploadCompanyLogo = asyncHandler(async (req, res, next) => {
   //   throw new MyError("Таны зурагны хэмжээ хэтэрсэн байна.", 400);
   // }
 
-  file.name = `photo_${req.params.id}${path.parse(file.name).ext}`;
+  file.name = `photo_logo_${req.params.id}${path.parse(file.name).ext}`;
 
-  file.mv(`${process.env.COMPANY_LOGO_PATH}/${file.name}`, (err) => {
+  file.mv(`${process.env.COMPANY_LOGO_PATH}/${file.name}`, async (err) => {
     if (err) {
       throw new MyError(
         "Файлыг хуулах явцад алдаа гарлаа. Алдаа : " + err.message,
@@ -32,11 +32,47 @@ exports.uploadCompanyLogo = asyncHandler(async (req, res, next) => {
     }
 
     company.logo = `${file.name}`;
-    company.save();
+    await company.save();
 
     res.status(200).json({
       success: true,
       data: file.name,
+    });
+  });
+});
+exports.uploadCompanyCover = asyncHandler(async (req, res, next) => {
+  const company = await Company.findById(req.params.id);
+  if (!company) {
+    throw new MyError(req.params.id + " ID-тэй байгууллага байхгүй.", 400);
+  }
+
+  // image upload
+  const file1 = req.files.file;
+
+  if (!file1.mimetype.startsWith("image")) {
+    throw new MyError("Та зураг upload хийнэ үү.", 400);
+  }
+
+  // if (file.size > process.env.MAX_UPLOAD_FILE_SIZE) {
+  //   throw new MyError("Таны зурагны хэмжээ хэтэрсэн байна.", 400);
+  // }
+
+  file1.name = `photo_cover_${req.params.id}${path.parse(file1.name).ext}`;
+
+  file1.mv(`${process.env.COMPANY_LOGO_PATH}/${file1.name}`, async (err) => {
+    if (err) {
+      throw new MyError(
+        "Файлыг хуулах явцад алдаа гарлаа. Алдаа : " + err.message,
+        400
+      );
+    }
+
+    company.cover = `${file1.name}`;
+    await company.save();
+
+    res.status(200).json({
+      success: true,
+      data: file1.name,
     });
   });
 });

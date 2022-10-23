@@ -108,7 +108,7 @@ const server = app.listen(process.env.PORT, () =>
 
 process.on("unhandledRejection", (err, promise) => {
   console.log(`Алдаа гарлаа : ${err.message}`);
-  server.close(() => {
-    process.exit(1);
-  });
+  // server.close(() => {
+  //   process.exit(1);
+  // });
 });

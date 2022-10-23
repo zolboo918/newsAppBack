@@ -103,7 +103,7 @@ exports.uploadBackImage = asyncHandler(async (req, res, next) => {
 
   file.name = `photo_${req.params.id}${path.parse(file.name).ext}`;
 
-  file.mv(`${process.env.COMPANY_LOGO_PATH}/${file.name}`, (err) => {
+  file.mv(`${process.env.COMPANY_LOGO_PATH}/${file.name}`, async (err) => {
     if (err) {
       throw new MyError(
         "Файлыг хуулах явцад алдаа гарлаа. Алдаа : " + err.message,
@@ -112,7 +112,7 @@ exports.uploadBackImage = asyncHandler(async (req, res, next) => {
     }
 
     nameCard.backImage = `${file.name}`;
-    nameCard.save();
+    await nameCard.save();
 
     res.status(200).json({
       success: true,
@@ -140,7 +140,7 @@ exports.uploadFrontImage = asyncHandler(async (req, res, next) => {
 
   file.name = `photo_${req.params.id}${path.parse(file.name).ext}`;
 
-  file.mv(`${process.env.COMPANY_LOGO_PATH}/${file.name}`, (err) => {
+  file.mv(`${process.env.COMPANY_LOGO_PATH}/${file.name}`, async (err) => {
     if (err) {
       throw new MyError(
         "Файлыг хуулах явцад алдаа гарлаа. Алдаа : " + err.message,
@@ -149,7 +149,7 @@ exports.uploadFrontImage = asyncHandler(async (req, res, next) => {
     }
 
     nameCard.frontImage = `${file.name}`;
-    nameCard.save();
+    await nameCard.save();
 
     res.status(200).json({
       success: true,

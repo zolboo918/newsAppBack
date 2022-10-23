@@ -9,7 +9,7 @@ const EventMapSchema = mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: "User",
   },
-  type: Number,
+  type: Number, // 1 - zochin, 2 - interested, 3 - going
 });
 
 module.exports = mongoose.model("EventMap", EventMapSchema);

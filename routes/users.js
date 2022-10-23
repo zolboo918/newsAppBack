@@ -5,8 +5,9 @@ const {
   loginUser,
   updateUserInfo,
   getUsers,
-  uploadUserNameCard,
   forgotPassword,
+  uploadUserNameCardBack,
+  uploadUserNameCardFront,
   resetPassword,
   getUser,
   deleteUser,
@@ -28,7 +29,8 @@ router.route("/reset-password").post(newPassword);
 // router.route("/:id/change-password").post(passwordChange);
 
 router.route("/").get(getUsers);
-router.route("/:id/photo").post(uploadUserNameCard);
+router.route("/:id/backImage").post(uploadUserNameCardBack);
+router.route("/:id/frontImage").post(uploadUserNameCardFront);
 
 // router
 //   .route("/:id")

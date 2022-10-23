@@ -10,7 +10,7 @@ const generateQrCode = require("../utils/generateQrCode");
 const { isEmpty } = require("lodash");
 const path = require("path");
 
-exports.uploadUserNameCard = asyncHandler(async (req, res, next) => {
+exports.uploadUserNameCardBack = asyncHandler(async (req, res, next) => {
   const nameCard = await NameCard.findById(req.params.id);
 
   if (!nameCard) {
@@ -24,9 +24,9 @@ exports.uploadUserNameCard = asyncHandler(async (req, res, next) => {
     throw new MyError("Та зураг upload хийнэ үү.", 400);
   }
 
-  file.name = `photo_${req.params.id}${path.parse(file.name).ext}`;
+  file.name = `photo_back${req.params.id}${path.parse(file.name).ext}`;
 
-  file.mv(`${process.env.COMPANY_LOGO_PATH}/${file.name}`, (err) => {
+  file.mv(`${process.env.COMPANY_LOGO_PATH}/${file.name}`, async (err) => {
     if (err) {
       throw new MyError(
         "Файлыг хуулах явцад алдаа гарлаа. Алдаа : " + err.message,
@@ -34,12 +34,46 @@ exports.uploadUserNameCard = asyncHandler(async (req, res, next) => {
       );
     }
 
-    nameCard.image = `${file.name}`;
-    nameCard.save();
+    nameCard.backImage = `${file.name}`;
+    await nameCard.save();
 
     res.status(200).json({
       success: true,
       data: file.name,
+    });
+  });
+});
+
+exports.uploadUserNameCardFront = asyncHandler(async (req, res, next) => {
+  const nameCard = await NameCard.findById(req.params.id);
+
+  if (!nameCard) {
+    throw new MyError(req.params.id + " ID-тэй нэрийн хуудас байхгүй.", 400);
+  }
+
+  // image upload
+  const file1 = req.files.file;
+
+  if (!file1.mimetype.startsWith("image")) {
+    throw new MyError("Та зураг upload хийнэ үү.", 400);
+  }
+
+  file1.name = `photo_front${req.params.id}${path.parse(file1.name).ext}`;
+
+  file1.mv(`${process.env.COMPANY_LOGO_PATH}/${file1.name}`, async (err) => {
+    if (err) {
+      throw new MyError(
+        "Файлыг хуулах явцад алдаа гарлаа. Алдаа : " + err.message,
+        400
+      );
+    }
+
+    nameCard.frontImage = `${file1.name}`;
+    await nameCard.save();
+
+    res.status(200).json({
+      success: true,
+      data: file1.name,
     });
   });
 });
@@ -52,12 +86,15 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
     lastName: data.lastName,
     phone: data.phone,
     email: data.email,
-    companyName: data.companyName,
+    companyId: data.companyId,
     qr,
     linkedInId: data.linkedInId,
     password: data.password,
     position: data.position.toUpperCase(),
     sectorId: data.sectorId,
+    profession: data.profession,
+    workPhone: data.workPhone,
+    aboutActivity: data.aboutActivity,
   };
   const user = await User.create(userBody);
 
@@ -78,7 +115,7 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
     profession: data.profession,
     aboutActivity: data.aboutActivity,
     email: data.email,
-    companyName: data.companyName,
+    companyId: data.companyId,
     qr,
     linkedInId: data.linkedInId,
     password: data.password,
@@ -122,7 +159,7 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
   }
 
   if (!user) {
-    throw new MyError("Нэвтрэх нэр, үгээ шалгана уу", 401);
+    throw new MyError("Нэвтрэх нэр, нууц үгээ шалгана уу", 401);
   }
 
   const ok = await user.checkPassword(password);
@@ -141,7 +178,7 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
   let nameCardPhoto = "";
   const nameCard = await NameCard.findOne({ userId: user.id });
   if (nameCard) {
-    nameCardPhoto = nameCard.image;
+    nameCardPhoto = nameCard.frontImage;
   }
   res.status(200).cookie("biz-card", token, cookieOptions).json({
     success: true,

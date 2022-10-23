@@ -9,21 +9,31 @@ const CompanySchema = new mongoose.Schema({
   logo: {
     type: String,
   },
+  cover: {
+    type: String,
+  },
   category: {
     type: mongoose.Schema.ObjectId,
     ref: "CompanyCategory",
     required: [true, "Байгууллагын үйл ажиллагааны ангилал заавал оруулна уу"],
   },
-  childCategory: {
-    type: mongoose.Schema.ObjectId,
-    ref: "CompanyChildCategory",
-    required: [true, "Байгууллагын үйл ажиллагааны чиглэл заавал оруулна уу"],
-  },
+  // childCategory: {
+  //   type: mongoose.Schema.ObjectId,
+  //   ref: "CompanyChildCategory",
+  //   required: [true, "Байгууллагын үйл ажиллагааны чиглэл заавал оруулна уу"],
+  // },
   intro: {
     type: String,
     required: true,
   },
-  phone: {
+  phone1: {
+    type: String,
+    required: [true, "Утасны дугаар заавал оруулна уу"],
+  },
+  phone2: {
+    type: String,
+  },
+  phone3: {
     type: String,
   },
   email: {
@@ -33,6 +43,9 @@ const CompanySchema = new mongoose.Schema({
       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
     ],
     unique: true,
+  },
+  website: {
+    type: String,
   },
   address: {
     type: String,

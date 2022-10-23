@@ -25,7 +25,7 @@ exports.uploadNewsPhoto = asyncHandler(async (req, res, next) => {
 
   file.name = `photo_${req.params.id}${path.parse(file.name).ext}`;
 
-  file.mv(`${process.env.COMPANY_LOGO_PATH}/${file.name}`, (err) => {
+  file.mv(`${process.env.COMPANY_LOGO_PATH}/${file.name}`, async (err) => {
     if (err) {
       throw new MyError(
         "Файлыг хуулах явцад алдаа гарлаа. Алдаа : " + err.message,
@@ -34,7 +34,7 @@ exports.uploadNewsPhoto = asyncHandler(async (req, res, next) => {
     }
 
     news.photo = `${file.name}`;
-    news.save();
+    await news.save();
 
     res.status(200).json({
       success: true,

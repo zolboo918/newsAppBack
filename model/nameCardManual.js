@@ -5,7 +5,8 @@ const NameCardManualSchema = new mongoose.Schema({
     type: [mongoose.Schema.ObjectId],
     ref: "User",
   },
-  image: String,
+  backImage: String,
+  frontImage: String,
   lastName: {
     type: String,
     required: [true, "Хэрэглэгчийн овог оруулна уу"],
@@ -33,7 +34,9 @@ const NameCardManualSchema = new mongoose.Schema({
     type: String,
     required: [true, "Албан тушаал заавал оруулна уу"],
   },
-  companyName: String,
+  profession: String,
+  workPhone: String,
+  aboutActivity: String,
   companyId: {
     type: mongoose.Schema.ObjectId,
     ref: "Company",
@@ -42,7 +45,6 @@ const NameCardManualSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: "Sector",
   },
-  note: String,
 });
 
 module.exports = mongoose.model("NameCardManual", NameCardManualSchema);
