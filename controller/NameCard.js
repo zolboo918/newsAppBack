@@ -87,7 +87,7 @@ exports.uploadBackImage = asyncHandler(async (req, res, next) => {
   const nameCard = await NameCard.findById(req.params.id);
 
   if (!nameCard) {
-    throw new MyError(req.params.id + " ID-тэй байгууллага байхгүй.", 400);
+    throw new MyError(req.params.id + " ID-тэй нэрийн хуудас байхгүй.", 400);
   }
 
   // image upload
@@ -101,7 +101,9 @@ exports.uploadBackImage = asyncHandler(async (req, res, next) => {
   //   throw new MyError("Таны зурагны хэмжээ хэтэрсэн байна.", 400);
   // }
 
-  file.name = `photo_${req.params.id}${path.parse(file.name).ext}`;
+  file.name = `photo_${req.params.id}${
+    Math.floor(Math.random() * 90000) + 10000
+  }${path.parse(file.name).ext}`;
 
   file.mv(`${process.env.COMPANY_LOGO_PATH}/${file.name}`, async (err) => {
     if (err) {
@@ -124,7 +126,7 @@ exports.uploadFrontImage = asyncHandler(async (req, res, next) => {
   const nameCard = await NameCard.findById(req.params.id);
 
   if (!nameCard) {
-    throw new MyError(req.params.id + " ID-тэй байгууллага байхгүй.", 400);
+    throw new MyError(req.params.id + " ID-тэй нэрийн хуудас байхгүй.", 400);
   }
 
   // image upload
@@ -138,7 +140,9 @@ exports.uploadFrontImage = asyncHandler(async (req, res, next) => {
   //   throw new MyError("Таны зурагны хэмжээ хэтэрсэн байна.", 400);
   // }
 
-  file.name = `photo_${req.params.id}${path.parse(file.name).ext}`;
+  file.name = `photo_${req.params.id}${
+    Math.floor(Math.random() * 90000) + 10000
+  }${path.parse(file.name).ext}`;
 
   file.mv(`${process.env.COMPANY_LOGO_PATH}/${file.name}`, async (err) => {
     if (err) {
